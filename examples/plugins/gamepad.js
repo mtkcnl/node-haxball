@@ -3,8 +3,8 @@ module.exports = function (API) {
 
     Object.setPrototypeOf(this, Plugin.prototype);
     Plugin.call(this, "gamepad", true, { // "gamepad" is plugin's name, "true" means "activated just after initialization". Every plugin should have a unique name.
-        version: "0.1",
-        author: "mtkcnl",
+        version: "0.2.1",
+        author: "mtkcnl & jafkc2",
         description: `This is a plugin which helps you to play with a controller/gamepad.`,
         allowFlags: AllowFlags.CreateRoom | AllowFlags.JoinRoom // We allow this plugin to be activated on both CreateRoom and JoinRoom.
     });
@@ -22,6 +22,19 @@ module.exports = function (API) {
         type: VariableType.Boolean,
         value: true
     });
+
+    this.defineVariable({
+        name: "intervalDelay",
+        description: "Delay value of the gamepadPoll interval.",
+        type: VariableType.Number,
+        range:{
+            min:0,
+            max:Infinity,
+            step:1
+        },
+        value:16.666666666666668
+    })
+
     /**@type {Gamepad | null}*/ let gamepad = null;
 
     // /**@type {String[]}*/
@@ -43,7 +56,7 @@ module.exports = function (API) {
     //     "DPAD-LEFT",
     //     "DPAD-RIGHT",
 
-    let animationFrameId = null;
+    let interval_id = null;
     /**
      * @param {GamepadEvent} event
      */
@@ -51,7 +64,6 @@ module.exports = function (API) {
         console.log(`Gamepad connected.\nIndex: ${event.gamepad.index}`);
         gamepad ??= event.gamepad;
         gamepad?.vibrationActuator?.playEffect("dual-rumble", { duration: 250, strongMagnitude: .8 }); // Little vibration to notice user about gamepad has found.
-
     }
     /**
      * @param {GamepadEvent} event
@@ -75,19 +87,17 @@ module.exports = function (API) {
         const gamepads = navigator.getGamepads();
         if (gamepads.length) gamepad ??= gamepads.find(v => v !== null)
 
-            console.log(gamepads);
-        animationFrameId = requestAnimationFrame(pollGamepad.bind(this));
+        console.log(gamepads);
+        interval_id = setInterval(pollGamepad.bind(this), this.intervalDelay);
 
     };
     this.finalize = function () {
         window.ongamepadconnected = null;
         window.ongamepaddisconnected = null;
-        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-
+        interval_id && (clearInterval(interval_id),interval_id = null)
     };
 
         this.onPlayerBallKick = (playerId, data) => {
-            console.log(this.vibrateOnBallKickl)
             if (this.vibrateOnBallKick && gamepad && playerId == this.room.currentPlayerId) {
                 gamepad.vibrationActuator.playEffect("dual-rumble", { duration: 150, strongMagnitude: 0.6 })
             }
@@ -97,6 +107,27 @@ module.exports = function (API) {
             if (this.vibrateOnGoal && gamepad) {
                 gamepad.vibrationActuator.playEffect("dual-rumble", { duration: 800, strongMagnitude: 1 })
             }
+        }
+        this.onPluginActiveChange = (plugin,customData) => {
+            if(plugin == this)
+            {
+                if(!this.active)
+                    interval_id && (clearInterval(interval_id), interval_id = null);
+                else
+                    interval_id == null && (interval_id = setInterval(pollGamepad.bind(this), this.intervalDelay));
+            }
+        }
+
+        this.onVariableValueChange = (addonObject, variableName, oldValue, newValue, customData) =>
+        {
+            if(this == addonObject)
+            {
+                if(variableName == "intervalDelay" && interval_id)
+                {
+                    clearInterval(interval_id);
+                    interval_id = setInterval(pollGamepad.bind(this), newValue);
+                }
+            }   
         }
 
         function pollGamepad() {
@@ -137,8 +168,7 @@ module.exports = function (API) {
                 }
 
                 const kick = btns[0].pressed;
-                this.room.setKeyState(Utils.keyState(dirX, dirY, kick));
+                this?.room.setKeyState(Utils.keyState(dirX, dirY, kick));
             }
-            animationFrameId = requestAnimationFrame(pollGamepad.bind(this))
         }
 }

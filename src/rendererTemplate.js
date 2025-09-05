@@ -80,7 +80,13 @@ module.exports = function(API, canvas){
   this.onPluginActiveChange = function(plugin, customData){};
   this.onConfigUpdate = function(oldRoomConfigObj, newRoomConfigObj, customData){};
   this.onRendererUpdate = function(oldRendererObj, newRendererObj, customData){};
+  this.onPluginAdd = function(pluginObj, customData){};
+  this.onPluginMove = function(pluginObj, customData){};
   this.onPluginUpdate = function(oldPluginObj, newPluginObj, customData){};
+  this.onPluginRemove = function(pluginObj, customData){};
+  this.onLibraryAdd = function(libraryObj, customData){};
+  this.onLibraryMove = function(libraryObj, customData){};
   this.onLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){};
+  this.onLibraryRemove = function(libraryObj, customData){};
   this.onLanguageChange = function(abbr, customData){};
 };

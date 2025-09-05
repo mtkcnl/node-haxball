@@ -235,13 +235,37 @@ module.exports = function(API){
   this.onRendererUpdate = function(oldRendererObj, newRendererObj, customData){};
   this.onAfterRendererUpdate = function(oldRendererObj, newRendererObj, customData){};
 
+  this.onBeforePluginAdd = function(pluginObj){/*return customData;*/};
+  this.onPluginAdd = function(pluginObj, customData){};
+  this.onAfterPluginAdd = function(pluginObj, customData){};
+
+  this.onBeforePluginMove = function(pluginObj){/*return customData;*/};
+  this.onPluginMove = function(pluginObj, customData){};
+  this.onAfterPluginMove = function(pluginObj, customData){};
+
   this.onBeforePluginUpdate = function(oldPluginObj, newPluginObj){/*return customData;*/};
   this.onPluginUpdate = function(oldPluginObj, newPluginObj, customData){};
   this.onAfterPluginUpdate = function(oldPluginObj, newPluginObj, customData){};
 
+  this.onBeforePluginRemove = function(pluginObj){/*return customData;*/};
+  this.onPluginRemove = function(pluginObj, customData){};
+  this.onAfterPluginRemove = function(pluginObj, customData){};
+
+  this.onBeforeLibraryAdd = function(libraryObj){/*return customData;*/};
+  this.onLibraryAdd = function(libraryObj, customData){};
+  this.onAfterLibraryAdd = function(libraryObj, customData){};
+
+  this.onBeforeLibraryMove = function(libraryObj){/*return customData;*/};
+  this.onLibraryMove = function(libraryObj, customData){};
+  this.onAfterLibraryMove = function(libraryObj, customData){};
+
   this.onBeforeLibraryUpdate = function(oldLibraryObj, newLibraryObj){/*return customData;*/};
   this.onLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){};
   this.onAfterLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){};
+
+  this.onBeforeLibraryRemove = function(libraryObj){/*return customData;*/};
+  this.onLibraryRemove = function(libraryObj, customData){};
+  this.onAfterLibraryRemove = function(libraryObj, customData){};
 
   this.onBeforeLanguageChange = function(abbr){/*return customData;*/};
   this.onLanguageChange = function(abbr, customData){};

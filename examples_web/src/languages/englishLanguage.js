@@ -65,7 +65,11 @@ module.exports = function(API){
 			[ErrorCodes.AuthBannedError]: "Auth banned: $1",
 			[ErrorCodes.NoProxyIdentityProblem]: "Basro's backend is not compatible with the login system, so the identity token and identity events are disabled.",
 			[ErrorCodes.NoProxyIdentitySolution]: "Solution: Use a proxy server and handle the login data there.",
-			[ErrorCodes.FailedToCreateRoom]: "An error ocurred while attempting to create the room. ($1)"
+			[ErrorCodes.FailedToCreateRoom]: "An error ocurred while attempting to create the room. ($1)",
+			[ErrorCodes.PluginAlreadyExistsError]: "Plugin already exists: $1",
+			[ErrorCodes.LibraryAlreadyExistsError]: "Library already exists: $1",
+			[ErrorCodes.RateLimitReached]: "Rate limit reached for client id: $1",
+			[ErrorCodes.UnknownMessageType]: "Unknown message type received from client id: $1"
 		}
 	};
 };

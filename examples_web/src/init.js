@@ -4,8 +4,8 @@ function init(headless, roomCallback){
     /*
     proxy: {
       WebSocketChangeOriginAllowed: false,
-      WebSocketUrl: "wss://surf-emerald-armadillo.glitch.me/",
-      HttpUrl: "https://surf-emerald-armadillo.glitch.me/rs/"
+      WebSocketUrl: "wss://node-haxball.onrender.com/",
+      HttpUrl: "https://node-haxball.onrender.com/rs/"
     }
     */
   }); // if you use our haxballOriginModifier extension, you don't need a proxy server. (But you still have to serve the files, you cannot open the html directly.)

@@ -130,7 +130,7 @@ module.exports = function(API){
     botIds.forEach((botId)=>{
 
       // get the original data object of the next bot
-      var cp = state.players.filter((x)=>(x.id==botId))[0];
+      var cp = state.getPlayer(botId);
       var playerDisc = cp?.disc?.ext;
 
       // coordinates: playerDisc.pos.x, playerDisc.pos.y

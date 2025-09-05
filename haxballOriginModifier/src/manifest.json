@@ -12,6 +12,8 @@
     "wss://*.glitch.me/*",
     "https://*.infinityfreeapp.com/*",
     "wss://*.infinityfreeapp.com/*",
+    "https://*.onrender.com/*",
+    "wss://*.onrender.com/*",
     "http://*.localhost:*/*",
     "ws://*.localhost:*/*"
   ],

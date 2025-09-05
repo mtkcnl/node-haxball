@@ -24,7 +24,7 @@ chrome.declarativeNetRequest.updateDynamicRules(
         },
         condition: {
           urlFilter: '*://*.haxball.com/*',
-          domains: ["haxball.com", "glitch.me", "localhost", "infinityfreeapp.com"]
+          domains: ["haxball.com", "glitch.me", "infinityfreeapp.com", "onrender.com", "localhost"]
         }
       }
     ]

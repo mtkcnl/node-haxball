@@ -187,12 +187,36 @@ function roomCallback(room){ // examples start from here.
     console.log("onRendererUpdate...", oldRendererObj, newRendererObj, customData);
   };
 
+  room.onPluginAdd = function(pluginObj, customData){
+    console.log("onPluginAdd...", pluginObj, customData);
+  };
+
+  room.onPluginMove = function(pluginObj, customData){
+    console.log("onPluginMove...", pluginObj, customData);
+  };
+
   room.onPluginUpdate = function(oldPluginObj, newPluginObj, customData){
     console.log("onPluginUpdate...", oldPluginObj, newPluginObj, customData);
+  };
+  
+  room.onPluginRemove = function(pluginObj, customData){
+    console.log("onPluginRemove...", pluginObj, customData);
+  };
+
+  room.onLibraryAdd = function(libraryObj, customData){
+    console.log("onLibraryAdd...", libraryObj, customData);
+  };
+
+  room.onLibraryMove = function(libraryObj, customData){
+    console.log("onLibraryMove...", libraryObj, customData);
   };
 
   room.onLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){
     console.log("onLibraryUpdate...", oldLibraryObj, newLibraryObj, customData);
+  };
+
+  room.onLibraryRemove = function(libraryObj, customData){
+    console.log("onLibraryRemove...", libraryObj, customData);
   };
 
   room.onLanguageChange = function(abbr, customData){

@@ -4,7 +4,8 @@ function sandboxWrapper(API){
     "lon": 40,
     "flag": "tr"
   };
-  var callbacks = "PlayerObjectCreated|PlayerDiscCreated|PlayerDiscDestroyed|RoomLink|PlayerBallKick|TeamGoal|GameEnd|GameTick|PlayerSyncChange|Announcement|KickOff|AutoTeams|ScoreLimitChange|TimeLimitChange|PlayerAdminChange|PlayerAvatarChange|PlayerHeadlessAvatarChange|PlayersOrderChange|PlayerTeamChange|StadiumChange|TeamColorsChange|TeamsLockChange|PlayerJoin|GamePauseChange|PlayerChat|PlayerInputChange|PlayerChatIndicatorChange|PlayerLeave|SetDiscProperties|KickRateLimitChange|GameStart|GameStop|PingData|PingChange|CollisionDiscVsDisc|CollisionDiscVsSegment|CollisionDiscVsPlane|CollisionDiscVsVertex|ModifyJoint|TimeIsUp|PositionsReset|BansClear|BanClear|HandicapChange|RoomRecaptchaModeChange|RoomTokenChange|RoomRecordingChange|RoomPropertiesChange|CustomEvent|BinaryCustomEvent|IdentityEvent|PluginActiveChange|ConfigUpdate|RendererUpdate|PluginUpdate|LibraryUpdate|LanguageChange|VariableValueChange".split("|");
+  var callbacks = "PlayerObjectCreated|PlayerDiscCreated|PlayerDiscDestroyed|RoomLink|PlayerBallKick|TeamGoal|GameEnd|GameTick|PlayerSyncChange|Announcement|KickOff|AutoTeams|ScoreLimitChange|TimeLimitChange|PlayerAdminChange|PlayerAvatarChange|PlayerHeadlessAvatarChange|PlayersOrderChange|PlayerTeamChange|StadiumChange|TeamColorsChange|TeamsLockChange|PlayerJoin|GamePauseChange|PlayerChat|PlayerInputChange|PlayerChatIndicatorChange|PlayerLeave|SetDiscProperties|KickRateLimitChange|GameStart|GameStop|PingData|PingChange|CollisionDiscVsDisc|CollisionDiscVsSegment|CollisionDiscVsPlane|CollisionDiscVsVertex|ModifyJoint|TimeIsUp|PositionsReset|BansClear|BanClear|HandicapChange|RoomRecaptchaModeChange|RoomTokenChange|RoomRecordingChange|RoomPropertiesChange|CustomEvent|BinaryCustomEvent|IdentityEvent|PluginActiveChange|ConfigUpdate|RendererUpdate|PluginAdd|PluginMove|PluginUpdate|PluginRemove|LibraryAdd|LibraryMove|LibraryUpdate|LibraryRemove|LanguageChange|VariableValueChange".split("|");
+  var clampNumber = (num, min, max)=>((num<min) ? min : ((num>max) ? max : num));
   function BanList(){
     this.addPlayer = function(){};
     this.addIp = function(){};
@@ -107,7 +108,7 @@ function sandboxWrapper(API){
         }
 
         var sandbox = API.Room.sandbox({
-          filterEvents: (event)=>(!initialized)?true:room._onOperationReceived(event.eventType, event, sandbox.currentFrameNo, null),
+          filterEvents: (event)=>(!initialized||(event.eventType==null))?true:room._onOperationReceived(event.eventType, event, sandbox.currentFrameNo, null),
           onAnnouncement: (...args)=>room._onAnnouncement(...args),
           onPlayerObjectCreated: (...args)=>room._onPlayerObjectCreated(...args),
           onPlayerDiscCreated: (...args)=>room._onPlayerDiscCreated(...args),
@@ -204,6 +205,33 @@ function sandboxWrapper(API){
           room._onRendererUpdate?.(oldRenderer, newRenderer);
         };
 
+        room.addPlugin = function(pluginObj){
+          if (room.pluginsMap[pluginObj.name]!=null)
+            throw API.Errors.ErrorCodes.PluginAlreadyExistsError; // "Plugin already exists: " + name
+          room.plugins.push(pluginObj);
+          room.pluginsMap[pluginObj.name] = pluginObj;
+          pluginObj.room = room;
+          pluginObj.initialize?.();
+          room._onPluginAdd?.(pluginObj);
+          if (pluginObj.active){
+            pluginObj.active = false; // to force-trigger plugin activation event
+            room.setPluginActive(pluginObj.name, true);
+          }
+        };
+
+        room.movePlugin = function(pluginIndex, newIndex){
+          var pluginObj = room.plugins[pluginIndex];
+          if (!pluginObj)
+            throw API.Errors.ErrorCodes.PluginNotFoundError; // "Plugin not found at index " + pluginIndex
+          room.plugins.splice(pluginIndex, 1);
+          room.plugins.splice(clampNumber(newIndex, 0, room.plugins.length+1), 0, pluginObj);
+          if (pluginObj.active){
+            activePlugins.splice(activePlugins.indexOf(pluginObj), 1);
+            addInOrder(room.plugins, activePlugins, pluginObj); // insert plugin to its old index. 
+          }
+          room._onPluginMove?.(pluginObj);
+        };
+
         room.updatePlugin = function(pluginIndex, newPluginObj){
           var oldPluginObj = room.plugins[pluginIndex];
           if (!oldPluginObj)
@@ -226,6 +254,38 @@ function sandboxWrapper(API){
           }
         };
 
+        room.removePlugin = function(pluginObj){
+          var idx = room.plugins.findIndex((x)=>x.name==pluginObj.name);
+          if (idx<0)
+            throw API.Errors.ErrorCodes.PluginNotFoundError; // "Plugin not found at index " + name
+          if (pluginObj.active)
+            room.setPluginActive(pluginObj.name, false);
+          pluginObj.finalize?.();
+          pluginObj.room = null;
+          room.plugins.splice(idx, 1);
+          delete room.pluginsMap[pluginObj.name];
+          room._onPluginRemove?.(pluginObj);
+        };
+
+        room.addLibrary = function(libraryObj){
+          if (room.librariesMap[libraryObj.name]!=null)
+            throw API.Errors.ErrorCodes.LibraryAlreadyExistsError; // "Library already exists: " + name
+          room.libraries.push(libraryObj);
+          room.librariesMap[libraryObj.name] = libraryObj;
+          libraryObj.room = room;
+          libraryObj.initialize?.();
+          room._onLibraryAdd?.(libraryObj);
+        };
+
+        room.moveLibrary = function(libraryIndex, newIndex){
+          var libraryObj = room.libraries[libraryIndex];
+          if (!libraryObj)
+            throw API.Errors.ErrorCodes.LibraryNotFoundError; // "Library not found at index " + libraryIndex
+          room.libraries.splice(libraryIndex, 1);
+          room.libraries.splice(clampNumber(newIndex, 0, room.libraries.length+1), 0, libraryObj);
+          room._onLibraryMove?.(libraryObj);
+        };
+
         room.updateLibrary = function(libraryIndex, newLibraryObj){
           var oldLibraryObj = room.libraries[libraryIndex];
           if (!oldLibraryObj)
@@ -241,6 +301,17 @@ function sandboxWrapper(API){
           newLibraryObj.initialize?.();
           room._onLibraryUpdate?.(oldLibraryObj, newLibraryObj);
         };
+
+        room.removeLibrary = function(libraryObj){
+          var idx = room.libraries.findIndex((x)=>x.name==libraryObj.name);
+          if (idx<0)
+            throw API.Errors.ErrorCodes.LibraryNotFoundError; // "Library not found at index " + name
+          libraryObj.finalize?.();
+          libraryObj.room = null;
+          room.libraries.splice(idx, 1);
+          delete room.librariesMap[libraryObj.name];
+          room._onLibraryRemove?.(libraryObj);
+        },
     
         room.setPluginActive = function(name, active){
           var obj = room.plugins.filter((x)=>x.name==name)[0], idx;
@@ -484,6 +555,11 @@ function sandboxWrapper(API){
         });
 
         Object.assign(room, {
+          executeEvent: function(msg, byId){
+            msg.byId = byId || 0;
+            sandbox.applyEvent(msg);
+            return true;
+          },
           setProperties: function(properties){
             if (!properties)
               return;

@@ -160,7 +160,7 @@ module.exports = function(API){
             y: 60-stadium.height,
             xspeed: stadium.initialXVelocity,
             yspeed: 0,
-            cGroup: 1<<CollisionFlags.c0
+            cGroup: CollisionFlags.c0
           });
         }
       });
@@ -248,7 +248,7 @@ module.exports = function(API){
           y: 60-stadium.height,
           xspeed: stadium.initialXVelocity,
           yspeed: 0,
-          cGroup: 1<<CollisionFlags.c0
+          cGroup: CollisionFlags.c0
         });
       }
     }, 100);

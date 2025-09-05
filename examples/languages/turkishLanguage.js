@@ -65,7 +65,11 @@ module.exports = function(API){
 			[ErrorCodes.AuthBannedError]: "Auth yasaklandı: $1",
 			[ErrorCodes.NoProxyIdentityProblem]: "Basro'nun backendi üyelik sistemi ile uyumlu değil, bu nedenle kimlik tokeni ve kimlik olayları devre dışı bırakıldı.",
 			[ErrorCodes.NoProxyIdentitySolution]: "Çözüm: Bir vekil sunucu kullanın ve üyelik verilerini orada işleyin.",
-			[ErrorCodes.FailedToCreateRoom]: "Oda oluşturulmaya çalışılırken bir hata oluştu. (1$)"
+			[ErrorCodes.FailedToCreateRoom]: "Oda oluşturulmaya çalışılırken bir hata oluştu. (1$)",
+			[ErrorCodes.PluginAlreadyExistsError]: "Eklenti zaten mevcut: $1",
+			[ErrorCodes.LibraryAlreadyExistsError]: "Kütüphane zaten mevcut: $1",
+			[ErrorCodes.RateLimitReached]: "Şu istemci idsi için oran sınırına ulaşıldı: $1",
+			[ErrorCodes.UnknownMessageType]: "Şu istemci idsinden bilinmeyen mesaj tipi alındı: $1"
 		}
 	};
 };

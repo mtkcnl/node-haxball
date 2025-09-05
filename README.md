@@ -1,4 +1,4 @@
-[![GitHub package.json version](https://img.shields.io/github/package-json/v/wxyz-abcd/node-haxball?style=flat-square)](https://github.com/wxyz-abcd/node-haxball) [![NPM Version](https://img.shields.io/npm/v/node-haxball?style=flat-square)](https://www.npmjs.com/package/node-haxball) [![NPM Monthly Downloads](https://img.shields.io/npm/dm/node-haxball?style=flat-square)](https://npmjs.org/package/node-haxball) [![Proxy Server Status](https://img.shields.io/endpoint?label=proxy%20server&style=flat-square&url=https%3A%2F%2Fnode-haxball.glitch.me%2Fstatus)](https://node-haxball.glitch.me)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/wxyz-abcd/node-haxball?style=flat-square)](https://github.com/wxyz-abcd/node-haxball) [![NPM Version](https://img.shields.io/npm/v/node-haxball?style=flat-square)](https://www.npmjs.com/package/node-haxball) [![NPM Monthly Downloads](https://img.shields.io/npm/dm/node-haxball?style=flat-square)](https://npmjs.org/package/node-haxball) [![Proxy Server Status](https://img.shields.io/endpoint?label=proxy%20server&style=flat-square&url=https%3A%2F%2Fnode-haxball.onrender.com%2Fstatus)](https://node-haxball.onrender.com)
 
 [![License](https://img.shields.io/github/license/wxyz-abcd/node-haxball?style=flat-square)](LICENSE) [![Last Commit](https://img.shields.io/github/last-commit/wxyz-abcd/node-haxball?style=flat-square)](https://github.com/wxyz-abcd/node-haxball/commits/) ![Language Most Used](https://img.shields.io/github/languages/top/wxyz-abcd/node-haxball?style=flat-square) ![Repository Size](https://img.shields.io/github/repo-size/wxyz-abcd/node-haxball?style=flat-square)
 
@@ -36,7 +36,7 @@ const { OperationType, VariableType, ConnectionState, AllowFlags, Direction, Col
 
 #### 💻 Usage on Browser
 
-  - NOTE: Usage on Browser currently relies on our <a href="https://node-haxball.glitch.me">proxy server</a>. (Will expire at the end of each month and not work for several days.)
+  - NOTE: Usage on Browser currently relies on our <a href="https://node-haxball.onrender.com">proxy server</a>. (Will expire at the end of each month and not work for several days.)
   - If you do not wish to use proxy server (which has some limitations), you will need our browser extension to change headers. (look at our <a href="https://github.com/wxyz-abcd/node-haxball/tree/main/haxballOriginModifier">haxballOriginModifier project</a>.)
   - <a href="https://abc-haxball-proxy.infinityfreeapp.com/?no_proxy_server=true">Alternate URL</a> (No proxy server yet.)
   - Moreover; if you have a custom backend server for Haxball, you can use it with this API too.
@@ -46,16 +46,16 @@ const { OperationType, VariableType, ConnectionState, AllowFlags, Direction, Col
   ```html
   <html>
     <head>
-      <script src="https://www.haxball.com/PwfmUfRI/__cache_static__/g/vendor/json5.min.js"></script> <!-- json5 library -->
-      <script src="https://www.haxball.com/PwfmUfRI/__cache_static__/g/vendor/pako-jszip.min.js"></script> <!-- pako library -->
+      <script src="https://cdn.jsdelivr.net/gh/wxyz-abcd/node-haxball@latest/examples_web/src/vendor/json5.min.js"></script> <!-- json5 library -->
+      <script src="https://cdn.jsdelivr.net/gh/wxyz-abcd/node-haxball@latest/examples_web/src/vendor/pako-jszip.min.js"></script> <!-- pako library -->
       <script src="https://cdn.jsdelivr.net/gh/wxyz-abcd/node-haxball@latest/src/api.js"></script> <!-- this file comes from this repo -->
     </head>
     <body>
       <script>
         var { OperationType, VariableType, ConnectionState, AllowFlags, Direction, CollisionFlags, CameraFollow, BackgroundType, GamePlayState, BanEntryType, Callback, Utils, Room, Replay, Query, Library, RoomConfig, Plugin, Renderer, Errors, Language, EventFactory, Impl } = abcHaxballAPI(window, {
           proxy: {
-            WebSocketUrl: "wss://node-haxball.glitch.me/",
-            HttpUrl: "https://node-haxball.glitch.me/rs/"
+            WebSocketUrl: "wss://node-haxball.onrender.com/",
+            HttpUrl: "https://node-haxball.onrender.com/rs/"
           }
         });
         // Use example code here.
@@ -69,8 +69,8 @@ const { OperationType, VariableType, ConnectionState, AllowFlags, Direction, Col
   ```html
   <html>
     <head>
-      <script src="https://www.haxball.com/PwfmUfRI/__cache_static__/g/vendor/json5.min.js"></script> <!-- json5 library -->
-      <script src="https://www.haxball.com/PwfmUfRI/__cache_static__/g/vendor/pako-jszip.min.js"></script> <!-- pako library -->
+      <script src="https://cdn.jsdelivr.net/gh/wxyz-abcd/node-haxball@latest/examples_web/src/vendor/json5.min.js"></script> <!-- json5 library -->
+      <script src="https://cdn.jsdelivr.net/gh/wxyz-abcd/node-haxball@latest/examples_web/src/vendor/pako-jszip.min.js"></script> <!-- pako library -->
       <script src="https://cdn.jsdelivr.net/gh/wxyz-abcd/node-haxball@latest/src/api.js"></script> <!-- this file comes from this repo -->
     </head>
     <body>
@@ -360,6 +360,7 @@ Room.create({
         - `version`: Haxball's version number. other clients cannot join this room if their version number is different than this number. default value is `9`.
         - `proxyAgent`: a custom proxy agent for the room's connection. This method does not work in browsers. Defaults to `null`.
         - `identityToken`: A token that represents a user data in a database of a custom proxy/backend server. Defaults to `null`.
+        - `debugDesync`: For a host room, can be `true`. For a client room, can be a callback function with parameters `hostRoomState` and `clientRoomState`. This callback is called whenever a desync occurs if the host room's `debugDesync` value is also `true`. Defaults to `null`.
 
         --- event callbacks section ---
         - `preInit(room)`: this is run as soon as the `room` object is created, just before the initialization of the plugins etc.
@@ -461,7 +462,6 @@ Room.create({
 
   - `properties`:
     - `isHost`: `true` for hosts, `false` for clients. read-only.
-    - `client`: a reference to an inner client object that the event callbacks before room was created are attached to.
     - `currentPlayerId`: current player's id. read-only.
     - `currentPlayer`: the original current player object. read-only.
     - `state`: the object that holds the whole room state. read-only.
@@ -473,8 +473,9 @@ Room.create({
     - `plugins`: array of all available plugins. this is used internally to restore the order of plugins while plugin activation/deactivation. read-only.
     - `activePlugins`: array of currently active plugins. this is used internally for callbacks. read-only.
     - `pluginsMap`: all available plugins mapped as `pluginsMap[plugin.name] = plugin`, for optimized use to communicate between all addons. read-only.
-    - `libraries`: array of all available libraries.
+    - `libraries`: array of all available libraries. read-only.
     - `librariesMap`: all available libraries mapped as `librariesMap[library.name] = library`, for optimized use to communicate between all addons. read-only.
+    - `debugDesync`: For a host room, can be `true`. For a client room, can be a callback function with parameters `hostRoomState` and `clientRoomState`. This callback is called whenever a desync occurs if the host room's `debugDesync` value is also `true`.
     - `name`: current name of the room. read-only.
     - `link`: current url of the room. read-only.
     - `timeLimit`: the game's current time limit. read-only.
@@ -505,6 +506,7 @@ Room.create({
     - `clearBans()`: clears all bans. host-only.
     - `clearBan(id)`: clears the ban of a player(`id`). host-only.
     - `executeEvent(event, byId)`: executes any event inside this room. host-only.
+    - `executeEventWithTarget(event, targetId)`: if `targetId` is `null`; works the same as `executeEvent`, otherwise sends any event to a specific player with id `targetId`. CAUTION: It will probably cause "intentional" desync for most events. host-only.
     - `clearEvents()`: clears the event queue. can be useful when the game engine is stuck.
     - `setAvatar(avatar)`: sets the current player's client `avatar`.
     - `setPlayerAvatar(id, value, headless)`: sets the avatar of player(`id`) to `avatar`. `headless` is a boolean to determine whether the headless or client avatar is being set. host-only.
@@ -557,9 +559,15 @@ Room.create({
     - `isRecording()`: returns `true` if recording/streaming has started; `false` otherwise.
     - `setConfig(roomConfig)`: sets the `RoomConfig` object that contains all the main callbacks of this room. the `roomConfig` object should be derived from the provided `RoomConfig` class.
     - `mixConfig(newRoomConfig)`: adds all callbacks in `newRoomConfig` into the room's current RoomConfig object. if there are callbacks with the same name, a new callback is created that calls both of them. (current callback is called first.)
+    - `addPlugin(pluginObj)`: adds the `pluginObj` to the plugins list, initialization and activation are automatic. the plugin object should be derived from the provided `Plugin` class.
+    - `movePlugin(pluginIndex, newIndex)`: moves the plugin at index `pluginIndex` to index `newIndex`.
     - `updatePlugin(pluginIndex, newPluginObj)`: sets the `Plugin` at the specified `pluginIndex` to the `newPluginObj` object, initialization and activation are automatic. plugin names must be the same. the plugin object should be derived from the provided `Plugin` class.
+    - `removePlugin(pluginObj)`: removes the `pluginObj` from the plugins list, deactivation is automatic.
     - `setRenderer(renderer)`: sets the `Renderer` object that will render the game. the `renderer` object should be derived from the provided `Renderer` class.
+    - `addLibrary(libraryObj)`: adds the `libraryObj` to the libraries list, initialization and activation are automatic. the library object should be derived from the provided `Library` class.
+    - `moveLibrary(libraryIndex, newIndex)`: moves the library at index `libraryIndex` to index `newIndex`.
     - `updateLibrary(libraryIndex, newLibraryObj)`: sets the `Library` at the specified `libraryIndex` to the `newLibraryObj` object, initialization and activation are automatic. library names must be the same. the library object should be derived from the provided `Library` class.
+    - `removeLibrary(libraryObj)`: removes the `libraryObj` from the libraries list, deactivation is automatic.
 
   - `sandbox mode functions`: these functions are not supported by the original Haxball client. you would need to create `CustomEvent`s to use them within a synchronized(network) environment. the game must NOT be stopped for these functions to work.
     - `takeSnapshot()` : returns a snapshot of the current game state. you can load this object directly into sandbox using its `useSnapshot(newRoomState)` function.
@@ -826,12 +834,30 @@ Room.create({
       - `customData = onBeforeRendererUpdate(oldRendererObj, newRendererObj)`: an old renderer object(`oldRendererObj`) was replaced by a new renderer object(`newRendererObj`).
       - `onRendererUpdate(oldRendererObj, newRendererObj, customData)`: an old renderer object(`oldRendererObj`) was replaced by a new renderer object(`newRendererObj`).
       - `onAfterRendererUpdate(oldRendererObj, newRendererObj, customData)`: an old renderer object(`oldRendererObj`) was replaced by a new renderer object(`newRendererObj`).
+      - `customData = onBeforePluginAdd(pluginObj)`: a new plugin object(`pluginObj`) was added.
+      - `onPluginAdd(pluginObj, customData)`: a new plugin object(`pluginObj`) was added.
+      - `onAfterPluginAdd(pluginObj, customData)`: a new plugin object(`pluginObj`) was added.
+      - `customData = onBeforePluginMove(pluginObj)`: a plugin object(`pluginObj`) was moved.
+      - `onPluginMove(pluginObj, customData)`: a plugin object(`pluginObj`) was moved.
+      - `onAfterPluginMove(pluginObj, customData)`: a plugin object(`pluginObj`) was moved.
       - `customData = onBeforePluginUpdate(oldPluginObj, newPluginObj)`: an old plugin object(`oldPluginObj`) was replaced by a new plugin object(`newPluginObj`).
       - `onPluginUpdate(oldPluginObj, newPluginObj, customData)`: an old plugin object(`oldPluginObj`) was replaced by a new plugin object(`newPluginObj`).
       - `onAfterPluginUpdate(oldPluginObj, newPluginObj, customData)`: an old plugin object(`oldPluginObj`) was replaced by a new plugin object(`newPluginObj`).
+      - `customData = onBeforePluginRemove(pluginObj)`: a plugin object(`pluginObj`) was removed.
+      - `onPluginRemove(pluginObj, customData)`: a plugin object(`pluginObj`) was removed.
+      - `onAfterPluginRemove(pluginObj, customData)`: a plugin object(`pluginObj`) was removed.
+      - `customData = onBeforeLibraryAdd(libraryObj)`: a new library object(`libraryObj`) was added.
+      - `onLibraryAdd(libraryObj, customData)`: a new library object(`libraryObj`) was added.
+      - `onAfterLibraryAdd(libraryObj, customData)`: a new library object(`libraryObj`) was added.
+      - `customData = onBeforeLibraryMove(libraryObj)`: a library object(`libraryObj`) was moved.
+      - `onLibraryMove(libraryObj, customData)`: a library object(`libraryObj`) was moved.
+      - `onAfterLibraryMove(libraryObj, customData)`: a library object(`libraryObj`) was moved.
       - `customData = onBeforeLibraryUpdate(oldLibraryObj, newLibraryObj)`: an old library object(`oldLibraryObj`) was replaced by a new library object(`newLibraryObj`).
       - `onLibraryUpdate(oldLibraryObj, newLibraryObj, customData)`: an old library object(`oldLibraryObj`) was replaced by a new library object(`newLibraryObj`).
       - `onAfterLibraryUpdate(oldLibraryObj, newLibraryObj, customData)`: an old library object(`oldLibraryObj`) was replaced by a new library object(`newLibraryObj`).
+      - `customData = onBeforeLibraryRemove(libraryObj)`: a library object(`libraryObj`) was removed.
+      - `onLibraryRemove(libraryObj, customData)`: a library object(`libraryObj`) was removed.
+      - `onAfterLibraryRemove(libraryObj, customData)`: a library object(`libraryObj`) was removed.
       - `customData = onBeforeLanguageChange(abbr)`: API's language abbreviation was changed to `abbr`.
       - `onLanguageChange(abbr, customData)`: API's language abbreviation was changed to `abbr`.
       - `onAfterLanguageChange(abbr, customData)`: API's language abbreviation was changed to `abbr`.
@@ -914,8 +940,14 @@ Room.create({
       - `onPluginActiveChange(plugin, customData)`: a plugin was activated/deactivated. triggered individually.
       - `onConfigUpdate(oldRoomConfigObj, newRoomConfigObj, customData)`: an old roomConfig object(`oldRoomConfigObj`) was replaced by a new roomConfig object(`newRoomConfigObj`).
       - `onRendererUpdate(oldRendererObj, newRendererObj, customData)`: an old renderer object(`oldRendererObj`) was replaced by a new renderer object(`newRendererObj`).
+      - `onPluginAdd(pluginObj, customData)`: a new plugin object(`pluginObj`) was added.
+      - `onPluginMove(pluginObj, customData)`: a plugin object(`pluginObj`) was moved.
       - `onPluginUpdate(oldPluginObj, newPluginObj, customData)`: an old plugin object(`oldPluginObj`) was replaced by a new plugin object(`newPluginObj`).
+      - `onPluginRemove(pluginObj, customData)`: a plugin object(`pluginObj`) was removed.
+      - `onLibraryAdd(libraryObj, customData)`: a new library object(`libraryObj`) was added.
+      - `onLibraryMove(libraryObj, customData)`: a library object(`libraryObj`) was moved.
       - `onLibraryUpdate(oldLibraryObj, newLibraryObj, customData)`: an old library object(`oldLibraryObj`) was replaced by a new library object(`newLibraryObj`).
+      - `onLibraryRemove(libraryObj, customData)`: a library object(`libraryObj`) was removed.
       - `onLanguageChange(abbr, customData)`: API's language abbreviation was changed to `abbr`.
       - `onVariableValueChange(addonObject, variableName, oldValue, newValue, customData)`: Value of the variable inside `addonObject` named `variableName` was changed from `oldValue` to `newValue`.
 
@@ -987,8 +1019,14 @@ Room.create({
       - `onPluginActiveChange(plugin, customData)`: a plugin was activated/deactivated. triggered individually.
       - `onConfigUpdate(oldRoomConfigObj, newRoomConfigObj, customData)`: an old roomConfig object(`oldRoomConfigObj`) was replaced by a new roomConfig object(`newRoomConfigObj`).
       - `onRendererUpdate(oldRendererObj, newRendererObj, customData)`: an old renderer object(`oldRendererObj`) was replaced by a new renderer object(`newRendererObj`).
+      - `onPluginAdd(pluginObj, customData)`: a new plugin object(`pluginObj`) was added.
+      - `onPluginMove(pluginObj, customData)`: a plugin object(`pluginObj`) was moved.
       - `onPluginUpdate(oldPluginObj, newPluginObj, customData)`: an old plugin object(`oldPluginObj`) was replaced by a new plugin object(`newPluginObj`).
+      - `onPluginRemove(pluginObj, customData)`: a plugin object(`pluginObj`) was removed.
+      - `onLibraryAdd(libraryObj, customData)`: a new library object(`libraryObj`) was added.
+      - `onLibraryMove(libraryObj, customData)`: a library object(`libraryObj`) was moved.
       - `onLibraryUpdate(oldLibraryObj, newLibraryObj, customData)`: an old library object(`oldLibraryObj`) was replaced by a new library object(`newLibraryObj`).
+      - `onLibraryRemove(libraryObj, customData)`: a library object(`libraryObj`) was removed.
       - `onLanguageChange(abbr, customData)`: API's language abbreviation was changed to `abbr`.
       - `onVariableValueChange(addonObject, variableName, oldValue, newValue, customData)`: Value of the variable inside `addonObject` named `variableName` was changed from `oldValue` to `newValue`.
 

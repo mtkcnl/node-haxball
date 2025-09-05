@@ -22,7 +22,7 @@ module.exports = function(API){
     var disc = player?.disc;
     if (!disc)
       return;
-    var ballCGroup = (1<<CollisionFlags.kick)|(1<<CollisionFlags.score)|(1<<CollisionFlags.ball);
+    var ballCGroup = CollisionFlags.kick|CollisionFlags.score|CollisionFlags.ball;
     if (ballPlayers.has(player.id)){
       if ((disc.cGroup&ballCGroup)!=ballCGroup){
         var { bCoef, cGroup, damping, gravity, invMass, radius } = that.room.stadium.discs[0];

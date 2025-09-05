@@ -49,7 +49,7 @@ module.exports = function(API){
         that.room.setPlayerDiscProperties(player.id, {
           xspeed: 0,
           yspeed: 0,
-          cGroup: 1<<CollisionFlags.c0
+          cGroup: CollisionFlags.c0
         });
       }
     });

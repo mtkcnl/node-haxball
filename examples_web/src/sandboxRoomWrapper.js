@@ -41,7 +41,7 @@ function sandboxRoomWrapper(){
 					loadImage("./images/concrete2.png"),
 					loadImage("./images/typing.png"),
 				]).then(([grass, concrete, concrete2, typing])=>{
-					var rendererParams, room, sound, keyHandler, chatApi;
+					var renderer, rendererParams, room, sound, keyHandler, chatApi;
 					var tmp = document.getElementsByClassName("canvasSubContainer");
 					var roomFrame = tmp.item(0), canvasContainer = tmp.item(1);
 					var chatLog = document.getElementsByClassName("chatLog").item(0);
@@ -336,7 +336,7 @@ function sandboxRoomWrapper(){
 								if (msg.length==2){
 									msg = parseHexInt(msg[1]);
 									if (msg!=null){ // && -200 <= msg && 200 >= msg
-										room.setExtrapolation(msg),
+					          renderer.extrapolation = msg;
 										chatApi.receiveNotice("Extrapolation set to "+msg+" msec");
 									}
 									else
@@ -845,7 +845,7 @@ function sandboxRoomWrapper(){
 							}
 						}
 						rendererParams = { canvas, images: { grass, concrete, concrete2, typing }, paintGame: true, onRequestAnimationFrame };
-						var renderer = new renderers.sandboxRenderer(API, rendererParams);
+						renderer = new renderers.sandboxRenderer(API, rendererParams);
 						renderer.followMode = true;
 						renderer.restrictCameraOrigin = true;
 						renderer.showInvisibleSegments = false;

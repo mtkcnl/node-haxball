@@ -1,5 +1,5 @@
 const chatHistoryLimit = 500, gameStateGUIUpdateFrameInterval = 30;
-var roomFrame, canvasContainer, roomState, chatApi, room, API, keyHandler, sound, rendererParams;
+var roomFrame, canvasContainer, roomState, chatApi, room, API, keyHandler, sound, rendererParams, renderer;
 var gameTime, redScore, blueScore, gameTime_ot, gameTime_m1, gameTime_m2, gameTime_s1, gameTime_s2;
 const teamNames = ["Spectators", "Red Team", "Blue Team"];
 
@@ -227,7 +227,7 @@ function analyzeChatCommand(msg){
       if (msg.length==2){
         msg = parseHexInt(msg[1]);
         if (msg!=null){ // && -200 <= msg && 200 >= msg
-          room.setExtrapolation(msg),
+          renderer.extrapolation = msg;
           chatApi.receiveNotice("Extrapolation set to " + msg + " msec");
         }
         else
@@ -629,7 +629,8 @@ window.onload = ()=>{
           }
         }
       };
-      room.setRenderer(new renderers.defaultRenderer(API, rendererParams));
+      renderer = new renderers.defaultRenderer(API, rendererParams);
+      room.setRenderer(renderer);
       if (room.librariesMap.aimbot)
         room.librariesMap.aimbot.active = !!_params.aimbot;
       updateGUI();

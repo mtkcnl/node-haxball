@@ -428,162 +428,162 @@ declare namespace MainReturnType {
     /**
      * If defined, the object will accept collisions with other "ball"s.
      */
-    ball = 0,
+    ball = 1,
 
     /**
      * If defined, the object will accept collisions with other "red"s.
      */
-    red = 1,
+    red = 2,
 
     /**
      * If defined, the object will accept collisions with other "blue"s.
      */
-    blue = 2,
+    blue = 4,
 
     /**
      * If defined, the object will accept collisions with other "red"s only until the kick-off event happens. 
      */
-    redKO = 3,
+    redKO = 8,
 
     /**
      * If defined, the object will accept collisions with other "blue"s only until the kick-off event happens. 
      */
-    blueKO = 4,
+    blueKO = 16,
 
     /**
      * If defined, the object will act as a wall.
      */
-    wall = 5,
+    wall = 32,
 
     /**
      * If defined, the object will become kickable. Haxball makes a player kick some object only if this `kick` flag exists in the object and the object is near enough to the player. (`4` map units, to be precise.)
      */
-    kick = 6,
+    kick = 64,
 
     /**
      * If defined, the object will score a goal for the opposite team if it passes a goal line.
      */
-    score = 7,
+    score = 128,
 
     /**
      * Free
      */
-    free1 = 8,
+    free1 = 256,
 
     /**
      * Free
      */
-    free2 = 9,
+    free2 = 512,
 
     /**
      * Free
      */
-    free3 = 10,
+    free3 = 1024,
 
     /**
      * Free
      */
-    free4 = 11,
+    free4 = 2048,
 
     /**
      * Free
      */
-    free5 = 12,
+    free5 = 4096,
 
     /**
      * Free
      */
-    free6 = 13,
+    free6 = 8192,
 
     /**
      * Free
      */
-    free7 = 14,
+    free7 = 16384,
 
     /**
      * Free
      */
-    free8 = 15,
+    free8 = 32768,
 
     /**
      * Free
      */
-    free9 = 16,
+    free9 = 65536,
 
     /**
      * Free
      */
-    free10 = 17,
+    free10 = 131072,
 
     /**
      * Free
      */
-    free11 = 18,
+    free11 = 262144,
 
     /**
      * Free
      */
-    free12 = 19,
+    free12 = 524288,
 
     /**
      * Free
      */
-    free13 = 20,
+    free13 = 1048576,
 
     /**
      * Free
      */
-    free14 = 21,
+    free14 = 2097152,
 
     /**
      * Free
      */
-    free15 = 22,
+    free15 = 4194304,
 
     /**
      * Free
      */
-    free16 = 23,
+    free16 = 8388608,
 
     /**
      * Free
      */
-    free17 = 24,
+    free17 = 16777216,
 
     /**
      * Free
      */
-    free18 = 25,
+    free18 = 33554432,
 
     /**
      * Free
      */
-    free19 = 26,
+    free19 = 67108864,
 
     /**
      * Free
      */
-    free20 = 27,
+    free20 = 134217728,
 
     /**
      * Free
      */
-    c0 = 28,
+    c0 = 268435456,
 
     /**
      * Free
      */
-    c1 = 29,
+    c1 = 536870912,
 
     /**
      * Free
      */
-    c2 = 30,
+    c2 = 1073741824,
 
     /**
      * Free
      */
-    c3 = 31
+    c3 = -2147483648
   }
 
   declare type int = number;
@@ -1147,7 +1147,7 @@ declare namespace MainReturnType {
     /**
      * Id of the player whose identity data is desired to be changed.
      */
-    public id: uint16;
+    public id: int32;
 
     /**
      * The identity data that should be received from the backend. It can be any JSON object.
@@ -1967,6 +1967,11 @@ declare namespace MainReturnType {
      * Use `Utils.calculateAllRoomDistances` to calculate this value automatically.
      */
     dist: number;
+
+    /**
+     * Creates a copy of this RoomData struct.
+     */
+    copy: ()=>RoomData;
   };
 
   declare type UpdatedRoomProps = {
@@ -2317,6 +2322,26 @@ declare namespace MainReturnType {
     onRendererUpdate?: (oldRendererObj: Renderer, newRendererObj: Renderer, customData?: any)=>any,
 
     /**
+     * Called just after a plugin object has been added.
+     * 
+     * @param pluginObj The Plugin object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onPluginAdd?: (pluginObj: Plugin, customData?: any)=>any,
+
+    /**
+     * Called just after a plugin object has been moved.
+     * 
+     * @param pluginObj The Plugin object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onPluginMove?: (pluginObj: Plugin, customData?: any)=>any,
+
+    /**
      * Called just after an old plugin object has been replaced by a new one.
      * 
      * @param oldPluginObj The old Plugin object.
@@ -2328,6 +2353,36 @@ declare namespace MainReturnType {
     onPluginUpdate?: (oldPluginObj: Plugin, newPluginObj: Plugin, customData?: any)=>any,
 
     /**
+     * Called just after a plugin object has been removed.
+     * 
+     * @param pluginObj The Plugin object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onPluginRemove?: (pluginObj: Plugin, customData?: any)=>any,
+
+    /**
+     * Called just after a library object has been added.
+     * 
+     * @param libraryObj The Library object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onLibraryAdd?: (libraryObj: Library, customData?: any)=>any,
+
+    /**
+     * Called just after a library object has been moved.
+     * 
+     * @param libraryObj The Library object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onLibraryMove?: (libraryObj: Library, customData?: any)=>any,
+
+    /**
      * Called just after an old library object has been replaced by a new one.
      * 
      * @param oldLibraryObj The old Library object.
@@ -2337,6 +2392,16 @@ declare namespace MainReturnType {
      * @returns void or a custom data to pass to the next callback.
      */
     onLibraryUpdate?: (oldLibraryObj: Library, newLibraryObj: Library, customData?: any)=>any,
+
+    /**
+     * Called just after a library object has been removed.
+     * 
+     * @param libraryObj The Library object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onLibraryRemove?: (libraryObj: Library, customData?: any)=>any,
 
     /**
      * Called just after the API's language has been changed.
@@ -3343,6 +3408,25 @@ declare namespace MainReturnType {
     onAfterRendererUpdate?: (oldRendererObj: Renderer, newRendererObj: Renderer, customData?: any)=>void,
 
     /**
+     * Called just after a plugin object has been added.
+     * 
+     * @param pluginObj The Plugin object.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onBeforePluginAdd?: (pluginObj: Plugin)=>any,
+
+    /**
+     * Called just after a plugin object has been added.
+     * 
+     * @param pluginObj The Plugin object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void.
+     */
+    onAfterPluginAdd?: (pluginObj: Plugin, customData?: any)=>void,
+
+    /**
      * Called just after an old plugin object has been replaced by a new one.
      * 
      * @param oldPluginObj The old Plugin object.
@@ -3364,6 +3448,63 @@ declare namespace MainReturnType {
     onAfterPluginUpdate?: (oldPluginObj: Plugin, newPluginObj: Plugin, customData?: any)=>void,
 
     /**
+     * Called just after a plugin object has been removed.
+     * 
+     * @param pluginObj The Plugin object.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onBeforePluginRemove?: (pluginObj: Plugin)=>any,
+
+    /**
+     * Called just after a plugin object has been removed.
+     * 
+     * @param pluginObj The Plugin object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void.
+     */
+    onAfterPluginRemove?: (pluginObj: Plugin, customData?: any)=>void,
+
+    /**
+     * Called just after a library object has been added.
+     * 
+     * @param libraryObj The Library object.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onBeforeLibraryAdd?: (libraryObj: Library)=>any,
+
+    /**
+     * Called just after a library object has been added.
+     * 
+     * @param libraryObj The Library object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void.
+     */
+    onAfterLibraryAdd?: (libraryObj: Library, customData?: any)=>void,
+
+    /**
+     * Called just after a library object has been moved.
+     * 
+     * @param libraryObj The Library object.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onBeforeLibraryMove?: (libraryObj: Library)=>any,
+
+    /**
+     * Called just after a library object has been moved.
+     * 
+     * @param libraryObj The Library object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void.
+     */
+    onAfterLibraryMove?: (libraryObj: Library, customData?: any)=>void,
+
+    /**
      * Called just after an old library object has been replaced by a new one.
      * 
      * @param oldLibraryObj The old Library object.
@@ -3383,6 +3524,25 @@ declare namespace MainReturnType {
      * @returns void.
      */
     onAfterLibraryUpdate?: (oldLibraryObj: Library, newLibraryObj: Library, customData?: any)=>void,
+
+    /**
+     * Called just after a library object has been removed.
+     * 
+     * @param libraryObj The Library object.
+     * 
+     * @returns void or a custom data to pass to the next callback.
+     */
+    onBeforeLibraryRemove?: (libraryObj: Library)=>any,
+
+    /**
+     * Called just after a library object has been removed.
+     * 
+     * @param libraryObj The Library object.
+     * @param customData the custom data that was returned from the previous callback.
+     * 
+     * @returns void.
+     */
+    onAfterLibraryRemove?: (libraryObj: Library, customData?: any)=>void,
 
     /**
      * Called just after the API's language has been changed.
@@ -4579,6 +4739,11 @@ declare namespace MainReturnType {
      * A token that represents a user data in a database of a custom proxy/backend server. If successful, room will create and emit an IdentityEvent for this player.
      */
     identityToken?: string;
+
+    /**
+     * For a host room, can be `true`. For a client room, can be a callback function with parameters `hostRoomState` and `clientRoomState`. (Look at https://github.com/wxyz-abcd/node-haxball/tree/main/examples/other/compareStates.js for the default implementation of desync checking.) This callback is called whenever a desync occurs if the host room's `debugDesync` value is also `true`. Defaults to `null`.
+     */
+    debugDesync?: true | ((hostRoomState: RoomState, clientRoomState: RoomState)=>void);
 
     /**
      * Called just after the `room` object is created, and before the initialization of the addons. This is where you can initialize/add your custom GUI functions to the room object to be used inside the addons.
@@ -7341,6 +7506,11 @@ declare namespace MainReturnType {
     requireRecaptcha: boolean;
 
     /**
+     * For a host room, can be `true`. For a client room, can be a callback function with parameters `hostRoomState` and `clientRoomState`. (Look at https://github.com/wxyz-abcd/node-haxball/tree/main/examples/other/compareStates.js for the default implementation of desync checking.) This callback is called whenever a desync occurs if the host room's `debugDesync` value is also `true`. Defaults to `null`.
+     */
+    debugDesync: null | true | ((hostRoomState: RoomState, clientRoomState: RoomState)=>void);
+
+    /**
      * Leaves the current room. Also releases the resources used by this object.
      * 
      * @returns void.
@@ -7447,6 +7617,17 @@ declare namespace MainReturnType {
      * @returns void.
      */
     executeEvent(event: HaxballEvent, byId: uint16): void;
+
+    /**
+     * Sends any event to the target player. If `targetId` is `null`; works the same as `executeEvent`. 
+     * CAUTION: It will probably cause "intentional" desync for most events. host-only.
+     * 
+     * @param event The event to be sent.
+     * @param targetId Id of the player to whom this event will be sent to.
+     * 
+     * @returns void.
+     */
+    executeEventWithTarget(event: HaxballEvent, targetId: uint16): void;
 
     /**
      * Clears the event queue. Can be useful when the game engine is stuck.
@@ -7936,6 +8117,25 @@ declare namespace MainReturnType {
     mixConfig(roomConfig: RoomConfig): void;
 
     /**
+     * Adds the `pluginObj` at the end of the plugins list, initializes and activates it if necessary.
+     * 
+     * @param pluginObj The Plugin object to be added.
+     * 
+     * @returns void.
+     */
+    addPlugin(pluginObj: Plugin): void;
+
+    /**
+     * Moves the `Plugin` at the specified `pluginIndex` to the index `newIndex`.
+     * 
+     * @param pluginIndex The index of the plugin that will be moved to a new index.
+     * @param newIndex The new index that the plugin is desired to be at.
+     * 
+     * @returns void.
+     */
+    movePlugin(pluginIndex: int, newIndex: int): void;
+
+    /**
      * Replaces the `Plugin` at the specified `pluginIndex` with the `newPluginObj` plugin. The old plugin is deactivated and finalized and the new plugin is initialized. If the old plugin was active before, the new plugin is also activated. The names of the plugins must be the same.
      * 
      * @param pluginIndex The index of the plugin that is about to be replaced with the new Plugin object.
@@ -7944,6 +8144,15 @@ declare namespace MainReturnType {
      * @returns void.
      */
     updatePlugin(pluginIndex: int, newPluginObj: Plugin): void;
+
+    /**
+     * Removes the `pluginObj` from the plugins list, deactivates and finalizes it if necessary.
+     * 
+     * @param pluginObj The Plugin object to be removed.
+     * 
+     * @returns void.
+     */
+    removePlugin(pluginObj: Plugin): void;
 
     /**
      * Sets the `Renderer` object that will render the game. If exists, the old renderer is finalized and the new renderer is initialized.
@@ -7955,6 +8164,25 @@ declare namespace MainReturnType {
     setRenderer(renderer: Renderer): void;
 
     /**
+     * Adds the `libraryObj` at the end of the libraries list and initializes it.
+     * 
+     * @param libraryObj The Library object to be added.
+     * 
+     * @returns void.
+     */
+    addLibrary(libraryObj: Library): void;
+
+    /**
+     * Moves the `Library` at the specified `libraryIndex` to the index `newIndex`.
+     * 
+     * @param libraryIndex The index of the library that will be moved to a new index.
+     * @param newIndex The new index that the library is desired to be at.
+     * 
+     * @returns void.
+     */
+    moveLibrary(libraryIndex: int, newIndex: int): void;
+
+    /**
      * Replaces the `Library` at the specified `libraryIndex` with the `newLibraryObj` library. The old library is finalized and the new library is initialized. The names of the libraries must be the same.
      * 
      * @param libraryIndex The index of the library that is about to be replaced with the new Library object.
@@ -7963,6 +8191,15 @@ declare namespace MainReturnType {
      * @returns void.
      */
     updateLibrary(libraryIndex: int, newLibraryObj: Library): void;
+
+    /**
+     * Removes the `libraryObj` from the libraries list and finalizes it.
+     * 
+     * @param libraryObj The Library object to be removed.
+     * 
+     * @returns void.
+     */
+    removeLibrary(libraryObj: Library): void;
 
     /**
      * Returns a snapshot of the current room state. You can load this object directly into sandbox using its `useSnapshot(roomState)` function. Note that the values stored here are the currently active values, not the static and stored ones.
@@ -8010,6 +8247,7 @@ declare namespace MainReturnType {
      *   - `version`: The version of this room. (default value is `9`)
      *   - `proxyAgent`:  A custom proxy agent to use for the room's connection. (default value is `null`)
      *   - `identityToken`: A token that represents a user data in a database of a custom proxy/backend server. (default value is `null`)
+     *   - `debugDesync`: A callback in client rooms that will be called whenever a desync occurs if the host room also has a `true` value for this key. Look at https://github.com/wxyz-abcd/node-haxball/tree/main/examples/other/compareStates.js for the default implementation of desync checking. (default value is `null`)
      *   - `preInit(room: Room)=>void`: A callback that is called just after the room is created, and before the initialization of the addons.. (default value is `null`)
      *   - `onOpen(room: Room)=>void`: A callback that is called when joining or creating a room was successful. (default value is `null`)
      *   - `onClose(reason: Errors.HBError)=>void`: A callback that is called while leaving the room. (default value is `null`)
@@ -8046,6 +8284,7 @@ declare namespace MainReturnType {
      *   - `version`: The version of this room. (default value is `9`)
      *   - `proxyAgent`:  A custom proxy agent to use for the room's connection. (default value is `null`)
      *   - `identityToken`: A token that represents a user data in a database of a custom proxy/backend server. (default value is `null`)
+     *   - `debugDesync`: A callback in client rooms that will be called whenever a desync occurs if the host room also has a `true` value for this key. Look at https://github.com/wxyz-abcd/node-haxball/tree/main/examples/other/compareStates.js for the default implementation of desync checking. (default value is `null`)
      *   - `preInit(room: Room)=>void`: A callback that is called just after the room is created, and before the initialization of the addons.. (default value is `null`)
      *   - `onOpen(room: Room)=>void`: A callback that is called when joining or creating a room was successful. (default value is `null`)
      *   - `onClose(reason: Errors.HBError)=>void`: A callback that is called while leaving the room. (default value is `null`)
@@ -9006,14 +9245,14 @@ declare namespace MainReturnType {
     setVariableGUIProps: (varName: string, ...vals: ({name: string, value: any})[])=>void;
 
     /**
-     * If defined, called while creating or joining a room, or during a call to `Room.updateLibrary`, `Room.updatePlugin`, `Room.setConfig` or `Room.setRenderer`. You should write all custom initialization logic inside this callback function.
+     * If defined, called while creating or joining a room, or during a call to `Room.addLibrary`, `Room.updateLibrary`, `Room.addPlugin`, `Room.updatePlugin`, `Room.setConfig` or `Room.setRenderer`. You should write all custom initialization logic inside this callback function.
      * 
      * @returns void.
      */
     initialize: ()=>void;
 
     /**
-     * If defined, called while leaving a room, or during a call to `Room.updateLibrary`, `Room.updatePlugin`, `Room.setConfig` or `Room.setRenderer`. We should write all custom finalization logic inside this callback function.
+     * If defined, called while leaving a room, or during a call to `Room.updateLibrary`, `Room.removeLibrary`, `Room.updatePlugin`, `Room.removePlugin`, `Room.setConfig` or `Room.setRenderer`. We should write all custom finalization logic inside this callback function.
      * 
      * @returns void.
      */
@@ -9489,7 +9728,27 @@ declare namespace MainReturnType {
       /**
        * "An error ocurred while attempting to create the room. ($1)"
        */
-      FailedToCreateRoom = 59
+      FailedToCreateRoom = 59,
+
+      /**
+       *  "Plugin already exists: $1"
+       */
+      PluginAlreadyExistsError = 60,
+
+      /**
+       *  "Library already exists: $1"
+       */
+      LibraryAlreadyExistsError = 61,
+
+      /**
+       *  "Rate limit reached for client id: $1"
+       */
+      RateLimitReached = 62,
+
+      /**
+       * "Unknown message type received from client id: $1"
+       */
+      UnknownMessageType = 63,
     }
     
   }

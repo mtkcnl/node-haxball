@@ -10,9 +10,10 @@ module.exports = function(API){
 
   var thisLibrary = this;
 
-  this.newWindowFromURL = function(url, width, height){
+  this.newWindowFromURL = function(url, width, height, onload){
     var w = window.open(url,"_blank",`left=${screen.availLeft + (screen.availWidth - width) / 2},top=${screen.availTop + (screen.availHeight - height) / 2},width=${width},height=${height},resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes`);
     w.room = thisLibrary.room;
+    w.onload = onload;
     return w;
   };
 
@@ -24,8 +25,9 @@ module.exports = function(API){
     return w;
   };
 
-  this.addScriptFromURLToWindow = function(win, url){
+  this.addScriptFromURLToWindow = function(win, url, onload){
     var script = win.document.createElement("script");
+    script.onload = onload;
     script.src = url;
     win.document.body.appendChild(script);
   };

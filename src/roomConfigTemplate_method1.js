@@ -221,13 +221,37 @@ function defineRoomCallbacks(room){
   room.onRendererUpdate = function(oldRendererObj, newRendererObj, customData){};
   room.onAfterRendererUpdate = function(oldRendererObj, newRendererObj, customData){};
 
+  room.onBeforePluginAdd = function(pluginObj){/*return customData;*/};
+  room.onPluginAdd = function(pluginObj, customData){};
+  room.onAfterPluginAdd = function(pluginObj, customData){};
+
+  room.onBeforePluginMove = function(pluginObj){/*return customData;*/};
+  room.onPluginMove = function(pluginObj, customData){};
+  room.onAfterPluginMove = function(pluginObj, customData){};
+
   room.onBeforePluginUpdate = function(oldPluginObj, newPluginObj){/*return customData;*/};
   room.onPluginUpdate = function(oldPluginObj, newPluginObj, customData){};
   room.onAfterPluginUpdate = function(oldPluginObj, newPluginObj, customData){};
 
+  room.onBeforePluginRemove = function(pluginObj){/*return customData;*/};
+  room.onPluginRemove = function(pluginObj, customData){};
+  room.onAfterPluginRemove = function(pluginObj, customData){};
+
+  room.onBeforeLibraryAdd = function(libraryObj){/*return customData;*/};
+  room.onLibraryAdd = function(libraryObj, customData){};
+  room.onAfterLibraryAdd = function(libraryObj, customData){};
+
+  room.onBeforeLibraryMove = function(libraryObj){/*return customData;*/};
+  room.onLibraryMove = function(libraryObj, customData){};
+  room.onAfterLibraryMove = function(libraryObj, customData){};
+
   room.onBeforeLibraryUpdate = function(oldLibraryObj, newLibraryObj){/*return customData;*/};
   room.onLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){};
   room.onAfterLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){};
+
+  room.onBeforeLibraryRemove = function(libraryObj){/*return customData;*/};
+  room.onLibraryRemove = function(libraryObj, customData){};
+  room.onAfterLibraryRemove = function(libraryObj, customData){};
 
   room.onBeforeLanguageChange = function(abbr){/*return customData;*/};
   room.onLanguageChange = function(abbr, customData){};

@@ -43,7 +43,7 @@ module.exports = function(API){
             task.lastTick+=task.step;
           } while(tick>=task.lastTick && (task.endTick==null || tick<=task.endTick) && task.condition());
         }
-        else if (tick>=task.endTick)
+        else if (task.endTick!=null && tick>=task.endTick)
           toRemove.push(i);
       }
       for(let i=toRemove.length-1;i>=0;i--){

@@ -64,7 +64,12 @@ module.exports = function(API){
 			[ErrorCodes.BadActorError]: "",
 			[ErrorCodes.AuthBannedError]: "",
 			[ErrorCodes.NoProxyIdentityProblem]: "",
-			[ErrorCodes.NoProxyIdentitySolution]: ""
+			[ErrorCodes.NoProxyIdentitySolution]: "",
+			[ErrorCodes.FailedToCreateRoom]: "",
+			[ErrorCodes.PluginAlreadyExistsError]: "",
+			[ErrorCodes.LibraryAlreadyExistsError]: "",
+			[ErrorCodes.RateLimitReached]: "",
+			[ErrorCodes.UnknownMessageType]: ""
 		}
 	};
 };

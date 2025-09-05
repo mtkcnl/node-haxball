@@ -1,13 +1,15 @@
 var API = sandboxRoomWrapper();
 const { OperationType, VariableType, ConnectionState, AllowFlags, CollisionFlags, Callback, Utils, Room, Replay, Query, RoomConfig, Plugin, Renderer, Errors, Language, Impl } = API;
 importAll({
+  languages: ["englishLanguage"],
 	roomConfigs: ["CMD_extendedConfig"],
-	libraries: ["commands", "permissions"],
-	plugins: ["balanceTeams", "modifyPlayerData", "CMD_controlOtherPlayers", "CMD_eventPermissions", "CMD_messaging", "CMD_accounts", "CMD_modifyPlayerInput", "CMD_afk", "CMD_autoPlay_mixed_inmemory_multiple", "CMD_breakConnection", "CMD_speedHack", "CMD_chess", "CMD_sokoban"],
+	libraries: ["commands", "permissions", "bricks"],
+	plugins: ["balanceTeams", "modifyPlayerData", "CMD_controlOtherPlayers", "CMD_eventPermissions", "CMD_messaging", "CMD_accounts", "CMD_modifyPlayerInput", "CMD_afk", "CMD_autoPlay_mixed_inmemory_multiple", "CMD_breakConnection", "CMD_speedHack", "CMD_chess", "CMD_sokoban", "tetris"],
 }, () => {
+  Language.current = new languages.englishLanguage(API);
   var prm = new libraries.permissions(API);
 	API.Room.create({
-    name: "chess", 
+    name: "tetris", 
     password: null, 
     noPlayer: false,
     showInRoomList: true, 
@@ -28,10 +30,10 @@ importAll({
       },
       avatar: "👾"
 		},
-		libraries: [new libraries.commands(API), prm],
+		libraries: [new libraries.commands(API), prm, new libraries.bricks(API)],
 		config: new roomConfigs.CMD_extendedConfig(API),
 		//renderer: ... // renderer is auto-configured by the sandbox room wrapper.
-		plugins: [/*new plugins.balanceTeams(API),*/ new plugins.modifyPlayerData(API), new plugins.CMD_accounts(API), new plugins.CMD_afk(API), new plugins.CMD_autoPlay_mixed_inmemory_multiple(API), new plugins.CMD_breakConnection(API), new plugins.CMD_controlOtherPlayers(API), new plugins.CMD_eventPermissions(API), new plugins.CMD_messaging(API), new plugins.CMD_modifyPlayerInput(API), new plugins.CMD_speedHack(API)/*, new plugins.CMD_chess(API), new plugins.CMD_sokoban(API)*/],
+		plugins: [/*new plugins.balanceTeams(API),*/ new plugins.modifyPlayerData(API), new plugins.CMD_accounts(API), new plugins.CMD_afk(API), new plugins.CMD_autoPlay_mixed_inmemory_multiple(API), new plugins.CMD_breakConnection(API), new plugins.CMD_controlOtherPlayers(API), new plugins.CMD_eventPermissions(API), new plugins.CMD_messaging(API), new plugins.CMD_modifyPlayerInput(API), new plugins.CMD_speedHack(API), new plugins.tetris(API)/*, new plugins.CMD_chess(API), new plugins.CMD_sokoban(API)*/],
     onOpen: (room)=>{
       room.mixConfig({
         onRoomLink: (roomLink, customData)=>{

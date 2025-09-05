@@ -217,12 +217,36 @@ module.exports = function(API){
     console.log("onRendererUpdate...", oldRendererObj, newRendererObj, customData);
   };
 
+  this.onPluginAdd = function(pluginObj, customData){
+    console.log("onPluginAdd...", pluginObj, customData);
+  };
+
+  this.onPluginMove = function(pluginObj, customData){
+    console.log("onPluginMove...", pluginObj, customData);
+  };
+
   this.onPluginUpdate = function(oldPluginObj, newPluginObj, customData){
     console.log("onPluginUpdate...", oldPluginObj, newPluginObj, customData);
+  };
+  
+  this.onPluginRemove = function(pluginObj, customData){
+    console.log("onPluginRemove...", pluginObj, customData);
+  };
+
+  this.onLibraryAdd = function(libraryObj, customData){
+    console.log("onLibraryAdd...", libraryObj, customData);
+  };
+
+  this.onLibraryMove = function(libraryObj, customData){
+    console.log("onLibraryMove...", libraryObj, customData);
   };
 
   this.onLibraryUpdate = function(oldLibraryObj, newLibraryObj, customData){
     console.log("onLibraryUpdate...", oldLibraryObj, newLibraryObj, customData);
+  };
+
+  this.onLibraryRemove = function(libraryObj, customData){
+    console.log("onLibraryRemove...", libraryObj, customData);
   };
 
   this.onLanguageChange = function(abbr, customData){

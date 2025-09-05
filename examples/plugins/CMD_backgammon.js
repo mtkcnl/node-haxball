@@ -246,7 +246,7 @@ module.exports = function(API){
     	"name" : "Backgammon",
     	"width" : 0,
     	"height" : 0,
-    	"cameraWidtwh" : 0,
+    	"cameraWidth" : 0,
     	"cameraHeight" : 0,
     	"maxViewWidth" : 0,
     	"cameraFollow" : "player",

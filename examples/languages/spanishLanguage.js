@@ -65,7 +65,11 @@ module.exports = function(API){
 			[ErrorCodes.AuthBannedError]: "Auth baneada: $1",
 			[ErrorCodes.NoProxyIdentityProblem]: "El backend de basro no es compatible con el sistema de login, por lo que el token de identidad y los eventos de identidad están desactivados.",
 			[ErrorCodes.NoProxyIdentitySolution]: "Solución: Utiliza un servidor proxy y gestiona allí los datos de acceso.",
-			[ErrorCodes.FailedToCreateRoom]: "Se produjo un error al intentar crear la sala. ($1)"
+			[ErrorCodes.FailedToCreateRoom]: "Se produjo un error al intentar crear la sala. ($1)",
+			[ErrorCodes.PluginAlreadyExistsError]: "Plugin ya existe: $1",
+			[ErrorCodes.LibraryAlreadyExistsError]: "Library ya existe: $1",
+			[ErrorCodes.RateLimitReached]: "Rate limit alcanzado para el ID del cliente: $1",
+			[ErrorCodes.UnknownMessageType]: "Tipo de mensaje desconocido recibido del cliente ID: $1"
 		}
 	};
 };
